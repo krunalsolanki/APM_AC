@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="APM_ACMaintanceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ACMasters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ACTypeMasterId" Type="int" Nullable="false" />
+          <Property Name="PurchaseDate" Type="datetime" />
+          <Property Name="LastServiceDate" Type="datetime" />
+          <Property Name="Note" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LocationMasterId" Type="int" Nullable="false" />
+          <Property Name="ShortName" Type="nvarchar(max)" />
+          <Property Name="LastServiceId" Type="int" />
+        </EntityType>
+        <EntityType Name="ACServiceHistories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceDate" Type="datetime" Nullable="false" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="PersonMasterId" Type="int" Nullable="false" />
+          <Property Name="ACMasterId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ACTypeMasters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ACName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ACCompanyName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Tons" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LocationMasters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddLine1" Type="nvarchar(max)" />
+          <Property Name="AddLine2" Type="nvarchar(max)" />
+          <Property Name="AddLine3" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PersonMasters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar(max)" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="DOJ" Type="datetime" />
+          <Property Name="DOB" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_ACMasterACServiceHistory">
+          <End Role="ACMasters" Type="Self.ACMasters" Multiplicity="1" />
+          <End Role="ACServiceHistories" Type="Self.ACServiceHistories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACMasters">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ACServiceHistories">
+              <PropertyRef Name="ACMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACTypeMasterACMaster">
+          <End Role="ACTypeMasters" Type="Self.ACTypeMasters" Multiplicity="1" />
+          <End Role="ACMasters" Type="Self.ACMasters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACTypeMasters">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ACMasters">
+              <PropertyRef Name="ACTypeMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LocationMasterACMaster">
+          <End Role="LocationMasters" Type="Self.LocationMasters" Multiplicity="1" />
+          <End Role="ACMasters" Type="Self.ACMasters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationMasters">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ACMasters">
+              <PropertyRef Name="LocationMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonMasterACServiceHistory">
+          <End Role="PersonMasters" Type="Self.PersonMasters" Multiplicity="1" />
+          <End Role="ACServiceHistories" Type="Self.ACServiceHistories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonMasters">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ACServiceHistories">
+              <PropertyRef Name="PersonMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="APM_ACMaintanceModelStoreContainer">
+          <EntitySet Name="ACMasters" EntityType="Self.ACMasters" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ACServiceHistories" EntityType="Self.ACServiceHistories" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ACTypeMasters" EntityType="Self.ACTypeMasters" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="LocationMasters" EntityType="Self.LocationMasters" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="PersonMasters" EntityType="Self.PersonMasters" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <AssociationSet Name="FK_ACMasterACServiceHistory" Association="Self.FK_ACMasterACServiceHistory">
+            <End Role="ACMasters" EntitySet="ACMasters" />
+            <End Role="ACServiceHistories" EntitySet="ACServiceHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACTypeMasterACMaster" Association="Self.FK_ACTypeMasterACMaster">
+            <End Role="ACTypeMasters" EntitySet="ACTypeMasters" />
+            <End Role="ACMasters" EntitySet="ACMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LocationMasterACMaster" Association="Self.FK_LocationMasterACMaster">
+            <End Role="LocationMasters" EntitySet="LocationMasters" />
+            <End Role="ACMasters" EntitySet="ACMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonMasterACServiceHistory" Association="Self.FK_PersonMasterACServiceHistory">
+            <End Role="PersonMasters" EntitySet="PersonMasters" />
+            <End Role="ACServiceHistories" EntitySet="ACServiceHistories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="APM_ACMaintanceModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="APM_ACMaintanceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ACMasters" EntityType="APM_ACMaintanceModel.ACMaster" />
+          <EntitySet Name="ACTypeMasters" EntityType="APM_ACMaintanceModel.ACTypeMaster" />
+          <AssociationSet Name="ACTypeMasterACMaster" Association="APM_ACMaintanceModel.ACTypeMasterACMaster">
+            <End Role="ACTypeMaster" EntitySet="ACTypeMasters" />
+            <End Role="ACMaster" EntitySet="ACMasters" />
+          </AssociationSet>
+          <EntitySet Name="LocationMasters" EntityType="APM_ACMaintanceModel.LocationMaster" />
+          <AssociationSet Name="LocationMasterACMaster" Association="APM_ACMaintanceModel.LocationMasterACMaster">
+            <End Role="LocationMaster" EntitySet="LocationMasters" />
+            <End Role="ACMaster" EntitySet="ACMasters" />
+          </AssociationSet>
+          <EntitySet Name="PersonMasters" EntityType="APM_ACMaintanceModel.PersonMaster" />
+          <EntitySet Name="ACServiceHistories" EntityType="APM_ACMaintanceModel.ACServiceHistory" />
+          <AssociationSet Name="PersonMasterACServiceHistory" Association="APM_ACMaintanceModel.PersonMasterACServiceHistory">
+            <End Role="PersonMaster" EntitySet="PersonMasters" />
+            <End Role="ACServiceHistory" EntitySet="ACServiceHistories" />
+          </AssociationSet>
+          <AssociationSet Name="ACMasterACServiceHistory" Association="APM_ACMaintanceModel.ACMasterACServiceHistory">
+            <End Role="ACMaster" EntitySet="ACMasters" />
+            <End Role="ACServiceHistory" EntitySet="ACServiceHistories" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ACMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ACTypeMaster" Relationship="APM_ACMaintanceModel.ACTypeMasterACMaster" FromRole="ACMaster" ToRole="ACTypeMaster" />
+          <Property Name="ACTypeMasterId" Type="Int32" Nullable="false" />
+          <Property Name="PurchaseDate" Type="DateTime" Nullable="true" Precision="3" />
+          <Property Name="LastServiceDate" Type="DateTime" Nullable="true" Precision="3" />
+          <Property Name="Note" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="LocationMaster" Relationship="APM_ACMaintanceModel.LocationMasterACMaster" FromRole="ACMaster" ToRole="LocationMaster" />
+          <Property Name="LocationMasterId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ACServiceHistories" Relationship="APM_ACMaintanceModel.ACMasterACServiceHistory" FromRole="ACMaster" ToRole="ACServiceHistory" />
+          <Property Name="ShortName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastServiceId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ACTypeMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ACName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ACCompanyName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Tons" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <NavigationProperty Name="ACMasters" Relationship="APM_ACMaintanceModel.ACTypeMasterACMaster" FromRole="ACTypeMaster" ToRole="ACMaster" />
+        </EntityType>
+        <Association Name="ACTypeMasterACMaster">
+          <End Type="APM_ACMaintanceModel.ACTypeMaster" Role="ACTypeMaster" Multiplicity="1" />
+          <End Type="APM_ACMaintanceModel.ACMaster" Role="ACMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACTypeMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ACMaster">
+              <PropertyRef Name="ACTypeMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="LocationMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddLine1" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="AddLine2" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="AddLine3" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ACMasters" Relationship="APM_ACMaintanceModel.LocationMasterACMaster" FromRole="LocationMaster" ToRole="ACMaster" />
+        </EntityType>
+        <Association Name="LocationMasterACMaster">
+          <End Type="APM_ACMaintanceModel.LocationMaster" Role="LocationMaster" Multiplicity="1" />
+          <End Type="APM_ACMaintanceModel.ACMaster" Role="ACMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ACMaster">
+              <PropertyRef Name="LocationMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PersonMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Mobile" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Address" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="DOJ" Type="DateTime" Nullable="true" Precision="3" />
+          <Property Name="DOB" Type="DateTime" Nullable="true" Precision="3" />
+          <NavigationProperty Name="ACServiceHistories" Relationship="APM_ACMaintanceModel.PersonMasterACServiceHistory" FromRole="PersonMaster" ToRole="ACServiceHistory" />
+        </EntityType>
+        <EntityType Name="ACServiceHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Note" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="PersonMaster" Relationship="APM_ACMaintanceModel.PersonMasterACServiceHistory" FromRole="ACServiceHistory" ToRole="PersonMaster" />
+          <Property Name="PersonMasterId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ACMaster" Relationship="APM_ACMaintanceModel.ACMasterACServiceHistory" FromRole="ACServiceHistory" ToRole="ACMaster" />
+          <Property Name="ACMasterId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="PersonMasterACServiceHistory">
+          <End Type="APM_ACMaintanceModel.PersonMaster" Role="PersonMaster" Multiplicity="1" />
+          <End Type="APM_ACMaintanceModel.ACServiceHistory" Role="ACServiceHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ACServiceHistory">
+              <PropertyRef Name="PersonMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ACMasterACServiceHistory">
+          <End Type="APM_ACMaintanceModel.ACMaster" Role="ACMaster" Multiplicity="1" />
+          <End Type="APM_ACMaintanceModel.ACServiceHistory" Role="ACServiceHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ACServiceHistory">
+              <PropertyRef Name="ACMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="APM_ACMaintanceModelStoreContainer" CdmEntityContainer="APM_ACMaintanceEntities">
+    <EntitySetMapping Name="ACMasters">
+      <EntityTypeMapping TypeName="IsTypeOf(APM_ACMaintanceModel.ACMaster)">
+        <MappingFragment StoreEntitySet="ACMasters">
+          <ScalarProperty Name="LastServiceId" ColumnName="LastServiceId" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ACTypeMasterId" ColumnName="ACTypeMasterId" />
+          <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+          <ScalarProperty Name="LastServiceDate" ColumnName="LastServiceDate" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="LocationMasterId" ColumnName="LocationMasterId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACTypeMasters">
+      <EntityTypeMapping TypeName="IsTypeOf(APM_ACMaintanceModel.ACTypeMaster)">
+        <MappingFragment StoreEntitySet="ACTypeMasters">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ACName" ColumnName="ACName" />
+          <ScalarProperty Name="ACCompanyName" ColumnName="ACCompanyName" />
+          <ScalarProperty Name="Tons" ColumnName="Tons" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LocationMasters">
+      <EntityTypeMapping TypeName="IsTypeOf(APM_ACMaintanceModel.LocationMaster)">
+        <MappingFragment StoreEntitySet="LocationMasters">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AddLine1" ColumnName="AddLine1" />
+          <ScalarProperty Name="AddLine2" ColumnName="AddLine2" />
+          <ScalarProperty Name="AddLine3" ColumnName="AddLine3" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PersonMasters">
+      <EntityTypeMapping TypeName="IsTypeOf(APM_ACMaintanceModel.PersonMaster)">
+        <MappingFragment StoreEntitySet="PersonMasters">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="DOJ" ColumnName="DOJ" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACServiceHistories">
+      <EntityTypeMapping TypeName="IsTypeOf(APM_ACMaintanceModel.ACServiceHistory)">
+        <MappingFragment StoreEntitySet="ACServiceHistories">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="PersonMasterId" ColumnName="PersonMasterId" />
+          <ScalarProperty Name="ACMasterId" ColumnName="ACMasterId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams />
+  </Designer>
+</edmx:Edmx>
